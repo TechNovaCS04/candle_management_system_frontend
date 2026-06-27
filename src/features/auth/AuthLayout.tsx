@@ -1,61 +1,104 @@
 import type { ReactNode } from "react";
+import {
+  Package,
+  Factory,
+  TrendingUp,
+  ShieldCheck,
+} from "lucide-react";
 import logo from "../../assets/logo.png";
+import authIllustration from "../../assets/auth-candle-management.png";
+
+const features = [
+  { icon: Package, title: "Inventory" },
+  { icon: Factory, title: "Production" },
+  { icon: TrendingUp, title: "Sales & finance" },
+  { icon: ShieldCheck, title: "Secure access" },
+];
 
 export default function AuthLayout({
   children,
   title,
   subtitle,
+  footer,
 }: {
   children: ReactNode;
   title: string;
   subtitle: string;
+  footer?: ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex bg-cream-100">
-      {/* Left brand panel — hidden on mobile */}
-      <div className="hidden lg:flex lg:w-[42%] relative bg-bronze-900 flex-col justify-between p-10 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, #C98A4B 0%, transparent 45%), radial-gradient(circle at 80% 75%, #B5651D 0%, transparent 50%)",
-          }}
-        />
+    <div className="auth-shell">
+      <aside className="auth-brand-panel">
+        <div className="auth-brand-glow w-72 h-72 bg-bronze-300 -top-16 -left-16" />
+        <div className="auth-brand-glow w-96 h-96 bg-bronze-500 bottom-0 right-0 translate-x-1/4 translate-y-1/4" />
 
-        <div className="relative z-10">
-          <h2 className="font-display text-3xl leading-tight text-cream-50 font-medium mb-4">
-            Hand-poured care,
-            <br />
-            managed with ease.
-          </h2>
-          <p className="text-bronze-100/70 text-sm leading-relaxed max-w-sm">
-            From raw wax to the customer's doorstep — track inventory,
-            production batches, sales and finances, all in one warm workspace.
-          </p>
-        </div>
+        <div className="auth-brand-content">
+          <div className="auth-brand-intro">
+            <p className="text-bronze-100/80 text-xs font-semibold uppercase tracking-widest mb-2">
+              Management Portal
+            </p>
+            <h2 className="font-display text-2xl xl:text-3xl leading-snug font-medium mb-2">
+              Run your candle business
+              <span className="text-bronze-100"> from one place.</span>
+            </h2>
+            <p className="text-bronze-100/70 text-xs xl:text-sm leading-relaxed max-w-md">
+              Inventory, production, sales, and finances in one workspace.
+            </p>
+          </div>
 
-        <p className="relative z-10 text-xs text-bronze-100/50">
-          © {new Date().getFullYear()} Sangeetha Candles. Administrator Portal.
-        </p>
-      </div>
-
-      {/* Right form panel — logo shown above the form at every screen size */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10">
-        <div className="w-full max-w-md">
-          <div className="flex items-center justify-center mb-8">
+          <div className="auth-hero-image hidden lg:block">
             <img
-              src={logo}
-              alt="Sangeetha Candles"
-              className="h-20 w-auto object-contain"
+              src={authIllustration}
+              alt="Candle workshop inventory and production management"
+              className="auth-hero-img"
             />
           </div>
 
-          <h1 className="font-display text-2xl font-semibold text-bronze-900 mb-1.5 text-center">
-            {title}
-          </h1>
-          <p className="text-sm text-bronze-500 mb-7 text-center">{subtitle}</p>
+          <div className="auth-feature-grid hidden lg:grid">
+            {features.map(({ icon: Icon, title: featureTitle }) => (
+              <div key={featureTitle} className="auth-feature-item">
+                <div className="auth-feature-icon">
+                  <Icon size={20} strokeWidth={1.75} />
+                </div>
+                <p className="text-sm font-semibold text-cream-50 leading-tight">{featureTitle}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {children}
+        <p className="auth-brand-footer">
+          © {new Date().getFullYear()} Sangeetha Candles · Built by TechNova
+        </p>
+      </aside>
+
+      <div className="auth-form-panel">
+        <div className="auth-form-bg" />
+
+        <div className="auth-form-wrap">
+          <div className="auth-hero-image lg:hidden mb-5 w-full">
+            <img
+              src={authIllustration}
+              alt="Candle workshop inventory and production management"
+              className="auth-hero-img-mobile"
+            />
+          </div>
+
+          <div className="auth-card w-full">
+            <div className="auth-card-accent" />
+
+            <div className="auth-card-inner">
+              <header className="auth-card-header">
+                <img src={logo} alt="Sangeetha Candles" className="auth-card-logo" />
+                <span className="auth-card-badge">Administrator Portal</span>
+                <h1 className="auth-card-title">{title}</h1>
+                <p className="auth-card-subtitle">{subtitle}</p>
+              </header>
+
+              <div className="auth-card-form">{children}</div>
+
+              {footer && <footer className="auth-card-footer">{footer}</footer>}
+            </div>
+          </div>
         </div>
       </div>
     </div>

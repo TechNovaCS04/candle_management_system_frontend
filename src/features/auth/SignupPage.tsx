@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { UserPlus, Eye, EyeOff } from "lucide-react";
+import { UserPlus, ArrowRight } from "lucide-react";
 import AuthLayout from "./AuthLayout";
+import PasswordField from "./PasswordField";
 import { Input } from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import { useAppDispatch } from "../../app/hooks";
@@ -14,6 +15,13 @@ interface FormState {
   confirmPassword: string;
 }
 
+function passwordStrengthLevel(password: string) {
+  if (!password) return 0;
+  if (password.length < 6) return 1;
+  if (password.length < 10) return 2;
+  return 3;
+}
+
 export default function SignupPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -23,7 +31,6 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,7 +55,6 @@ export default function SignupPage() {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    // Mock registration — replace with POST /api/admin/register once backend is ready.
     setTimeout(() => {
       setIsSubmitting(false);
       dispatch(
@@ -61,79 +67,112 @@ export default function SignupPage() {
     }, 700);
   }
 
+  const strength = passwordStrengthLevel(form.password);
+
   return (
-    <AuthLayout title="Create administrator account" subtitle="Set up access to the Sangeetha Candles admin portal.">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-        <Input
-          label="Full name"
-          name="fullName"
-          placeholder="Enter your full name"
-          value={form.fullName}
-          onChange={(e) => update("fullName", e.target.value)}
-          error={errors.fullName}
-          required
-          autoComplete="name"
-        />
-
-
-        <Input
-          label="Email address"
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          value={form.email}
-          onChange={(e) => update("email", e.target.value)}
-          error={errors.email}
-          required
-          autoComplete="email"
-        />
-
-        <div className="relative">
+    <AuthLayout
+      title="Create your account"
+      subtitle="Register to access the candle management portal."
+      footer={
+        <p className="text-sm text-text-muted text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="auth-link">
+            Sign in
+          </Link>
+        </p>
+      }
+    >
+      <form onSubmit={handleSubmit} className="auth-form" noValidate>
+        <div className="auth-form-grid">
           <Input
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter your password"
-            value={form.password}
-            onChange={(e) => update("password", e.target.value)}
-            error={errors.password}
+            label="Full name"
+            name="fullName"
+            placeholder="Your full name"
+            value={form.fullName}
+            onChange={(e) => update("fullName", e.target.value)}
+            error={errors.fullName}
             required
-            autoComplete="new-password"
-            className="pr-10"
+            autoComplete="name"
+            className="auth-field"
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-[40px] text-bronze-300 hover:text-bronze-600 transition-colors"
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-          </button>
+
+          <Input
+            label="Email address"
+            type="email"
+            name="email"
+            placeholder="admin@sangeethacandles.lk"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            error={errors.email}
+            required
+            autoComplete="email"
+            className="auth-field"
+          />
         </div>
 
-        <Input
-          label="Confirm password"
-          type={showPassword ? "text" : "password"}
-          name="confirmPassword"
-          placeholder="Re-enter your password"
-          value={form.confirmPassword}
-          onChange={(e) => update("confirmPassword", e.target.value)}
-          error={errors.confirmPassword}
+        <PasswordField
+          label="Password"
+          name="password"
+          value={form.password}
+          onChange={(v) => update("password", v)}
+          error={errors.password}
+          placeholder="Create a password"
           required
           autoComplete="new-password"
+          inputClassName="auth-field"
         />
 
-        <Button type="submit" fullWidth size="md" disabled={isSubmitting} className="mt-1" icon={<UserPlus size={16} />}>
+        {form.password.length > 0 && (
+          <div className="auth-strength" aria-hidden>
+            <div className="auth-strength-bars">
+              {[1, 2, 3].map((level) => (
+                <span
+                  key={level}
+                  className={`auth-strength-bar ${
+                    strength >= level
+                      ? strength === 1
+                        ? "auth-strength-bar-weak"
+                        : strength === 2
+                          ? "auth-strength-bar-good"
+                          : "auth-strength-bar-strong"
+                      : ""
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="auth-strength-label">
+              {strength === 1 ? "Weak" : strength === 2 ? "Good" : "Strong"}
+            </span>
+          </div>
+        )}
+
+        <PasswordField
+          label="Confirm password"
+          name="confirmPassword"
+          value={form.confirmPassword}
+          onChange={(v) => update("confirmPassword", v)}
+          error={errors.confirmPassword}
+          placeholder="Re-enter your password"
+          required
+          autoComplete="new-password"
+          inputClassName="auth-field"
+        />
+
+        <p className="auth-note">
+          For authorized business management use only.
+        </p>
+
+        <Button
+          type="submit"
+          fullWidth
+          size="md"
+          disabled={isSubmitting}
+          className="auth-submit"
+          icon={isSubmitting ? <UserPlus size={18} /> : <ArrowRight size={18} />}
+        >
           {isSubmitting ? "Creating account…" : "Create account"}
         </Button>
       </form>
-
-      <p className="text-sm text-bronze-500 text-center mt-7">
-        Already have an account?{" "}
-        <Link to="/login" className="font-medium text-bronze-700 hover:text-bronze-900">
-          Sign in
-        </Link>
-      </p>
     </AuthLayout>
   );
 }

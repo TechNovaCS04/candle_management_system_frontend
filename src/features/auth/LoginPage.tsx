@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { LogIn, Lock, ArrowRight } from "lucide-react";
 import AuthLayout from "./AuthLayout";
+import PasswordField from "./PasswordField";
 import { Input } from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import { useAppDispatch } from "../../app/hooks";
@@ -12,7 +13,6 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -32,7 +32,6 @@ export default function LoginPage() {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    // Mock auth — replace with real API call once backend auth endpoint is ready.
     setTimeout(() => {
       setIsSubmitting(false);
       if (password.length < 6) {
@@ -50,73 +49,73 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayout title="Welcome back" subtitle="Sign in to manage your candle business.">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to manage inventory, production, and sales."
+      footer={
+        <>
+          <p className="text-sm text-text-muted text-center">
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="auth-link">
+              Create account
+            </Link>
+          </p>
+          <div className="auth-trust-badge">
+            <Lock size={14} />
+            <span>Secured management access</span>
+          </div>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="auth-form" noValidate>
         <Input
           label="Email address"
           type="email"
           name="email"
-          placeholder="Enter your email"
+          placeholder="admin@sangeethacandles.lk"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={errors.email}
           required
           autoComplete="email"
+          className="auth-field"
         />
 
-        <div className="relative">
-          <Input
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={errors.password}
-            required
-            autoComplete="current-password"
-            className="pr-10"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-[40px] text-bronze-300 hover:text-bronze-600 transition-colors"
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-          </button>
-        </div>
+        <PasswordField
+          label="Password"
+          name="password"
+          value={password}
+          onChange={setPassword}
+          error={errors.password}
+          placeholder="Enter your password"
+          required
+          autoComplete="current-password"
+          inputClassName="auth-field"
+        />
 
-        <div className="flex items-center justify-between -mt-1">
-          <label className="flex items-center gap-2 text-sm text-bronze-600 cursor-pointer">
-            <input type="checkbox" className="rounded border-wax-300 text-bronze-500 focus:ring-bronze-300" />
-            Remember me
+        <div className="auth-form-row">
+          <label className="auth-checkbox">
+            <input type="checkbox" />
+            <span>Remember me</span>
           </label>
-          <Link to="/forgot-password" className="text-sm font-medium text-bronze-600 hover:text-bronze-800">
+          <Link to="/forgot-password" className="auth-inline-link">
             Forgot password?
           </Link>
         </div>
 
-        {authError && (
-          <p className="text-sm text-ember-500 bg-ember-100 rounded-lg px-3 py-2">{authError}</p>
-        )}
+        {authError && <p className="auth-alert-error">{authError}</p>}
 
-        <Button type="submit" fullWidth size="md" disabled={isSubmitting} className="mt-1" icon={<Mail size={16} />}>
+        <Button
+          type="submit"
+          fullWidth
+          size="md"
+          disabled={isSubmitting}
+          className="auth-submit"
+          icon={isSubmitting ? <LogIn size={18} /> : <ArrowRight size={18} />}
+        >
           {isSubmitting ? "Signing in…" : "Sign in"}
         </Button>
       </form>
-
-      <p className="text-sm text-bronze-500 text-center mt-7">
-        Don't have an account?{" "}
-        <Link to="/signup" className="font-medium text-bronze-700 hover:text-bronze-900">
-          Sign up
-        </Link>
-      </p>
-
-      <div className="flex items-center gap-2 mt-6 text-bronze-300">
-        <Lock size={12} />
-        <span className="text-xs">Secured administrator access only</span>
-      </div>
     </AuthLayout>
   );
 }

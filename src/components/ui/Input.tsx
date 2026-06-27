@@ -12,21 +12,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-bronze-800">
+          <label htmlFor={inputId} className="field-label">
             {label}
-            {props.required && <span className="text-ember-500 ml-0.5">*</span>}
+            {props.required && <span className="text-danger ml-0.5">*</span>}
           </label>
         )}
         <input
           ref={ref}
           id={inputId}
-          className={`w-full rounded-lg border bg-cream-50 px-3.5 py-2.5 text-sm text-bronze-900 placeholder:text-bronze-300 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-300 ${
-            error ? "border-ember-500" : "border-wax-200 focus:border-bronze-400"
-          } ${className}`}
+          className={`field ${error ? "border-danger" : ""} ${className}`}
           {...props}
         />
-        {hint && !error && <span className="text-xs text-bronze-400">{hint}</span>}
-        {error && <span className="text-xs text-ember-500">{error}</span>}
+        {hint && !error && <span className="field-hint">{hint}</span>}
+        {error && <span className="field-error">{error}</span>}
       </div>
     );
   }
@@ -45,17 +43,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={selectId} className="text-sm font-medium text-bronze-800">
+          <label htmlFor={selectId} className="field-label">
             {label}
-            {props.required && <span className="text-ember-500 ml-0.5">*</span>}
+            {props.required && <span className="text-danger ml-0.5">*</span>}
           </label>
         )}
         <select
           ref={ref}
           id={selectId}
-          className={`w-full rounded-lg border bg-cream-50 px-3.5 py-2.5 text-sm text-bronze-900 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-300 ${
-            error ? "border-ember-500" : "border-wax-200 focus:border-bronze-400"
-          } ${className}`}
+          className={`field ${error ? "border-danger" : ""} ${className}`}
           {...props}
         >
           {options.map((opt) => (
@@ -64,7 +60,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <span className="text-xs text-ember-500">{error}</span>}
+        {error && <span className="field-error">{error}</span>}
       </div>
     );
   }
@@ -82,20 +78,18 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={textareaId} className="text-sm font-medium text-bronze-800">
+          <label htmlFor={textareaId} className="field-label">
             {label}
-            {props.required && <span className="text-ember-500 ml-0.5">*</span>}
+            {props.required && <span className="text-danger ml-0.5">*</span>}
           </label>
         )}
         <textarea
           ref={ref}
           id={textareaId}
-          className={`w-full rounded-lg border bg-cream-50 px-3.5 py-2.5 text-sm text-bronze-900 placeholder:text-bronze-300 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-300 resize-none ${
-            error ? "border-ember-500" : "border-wax-200 focus:border-bronze-400"
-          } ${className}`}
+          className={`field resize-none ${error ? "border-danger" : ""} ${className}`}
           {...props}
         />
-        {error && <span className="text-xs text-ember-500">{error}</span>}
+        {error && <span className="field-error">{error}</span>}
       </div>
     );
   }

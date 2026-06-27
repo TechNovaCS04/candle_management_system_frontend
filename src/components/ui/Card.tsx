@@ -2,10 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 
 export function Card({ className = "", children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={`bg-cream-50 border border-wax-200 rounded-xl ${className}`}
-      {...props}
-    >
+    <div className={`panel ${className}`} {...props}>
       {children}
     </div>
   );
@@ -14,11 +11,11 @@ export function Card({ className = "", children, ...props }: HTMLAttributes<HTML
 type BadgeTone = "neutral" | "success" | "warning" | "danger" | "info";
 
 const toneClasses: Record<BadgeTone, string> = {
-  neutral: "bg-wax-100 text-bronze-700",
-  success: "bg-sage-100 text-sage-700",
-  warning: "bg-amber-100 text-amber-700",
-  danger: "bg-ember-100 text-ember-700",
-  info: "bg-bronze-50 text-bronze-700",
+  neutral: "bg-surface-hover text-text-body",
+  success: "bg-success-bg text-success-text",
+  warning: "bg-warning-bg text-warning-text",
+  danger: "bg-danger-bg text-danger-text",
+  info: "bg-brand-subtle text-text-body",
 };
 
 export function Badge({
