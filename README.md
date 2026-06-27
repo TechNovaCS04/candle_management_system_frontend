@@ -2,8 +2,6 @@
 
 A POS-style admin web app for managing a candle production & sales business — built with **React + TypeScript + Vite + Tailwind CSS v4 + Redux Toolkit**.
 
-This is the **frontend-only** build. All data is currently mock data wired through Redux (in `src/data/mockData.ts` + slices in each `features/*` folder). When the Flask/MySQL backend is ready, replace the mock arrays with real API calls — the component code does not need to change, only the slice initial data / async thunks.
-
 ## Getting Started
 
 ```bash
@@ -73,4 +71,4 @@ src/
 All routes except `/login` and `/signup` are behind `ProtectedRoute` (redirects to `/login` if not authenticated).
 
 
-**Built With TechNova Team**.
+**Built With TechNova Team 💎**.
