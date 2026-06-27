@@ -73,4 +73,4 @@ src/
 All routes except `/login` and `/signup` are behind `ProtectedRoute` (redirects to `/login` if not authenticated).
 
 
-**Built WITH TechNova Team**.
+**Built With TechNova Team**.
