@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Core palette — warm wax workshop */
+  --color-cream-50: #FEFCF9;
+  --color-cream-100: #FBF7F0;
+  --color-cream-200: #F3EBDC;
+  --color-wax-100: #E8DCC8;
+  --color-wax-200: #DCCBAE;
+  --color-wax-300: #C9B08A;
+
+  --color-bronze-50: #F7ECE2;
+  --color-bronze-100: #E8C9A8;
+  --color-bronze-200: #DDB68C; 
+  --color-bronze-300: #C98A4B;
+  --color-bronze-500: #B5651D;
+  --color-bronze-600: #9C5418;
+  --color-bronze-700: #7A4A2B;
+  --color-bronze-800: #5C381F;
+  --color-bronze-900: #3A2317;
+
+  --color-sage-100: #DCEAE1;
+  --color-sage-500: #2F6B4F;
+  --color-sage-700: #1F4A36;
+
+  --color-ember-100: #F3DAD5;
+  --color-ember-500: #A23B2E;
+  --color-ember-700: #7A2A20;
+
+  --color-amber-100: #FBE8C8;
+  --color-amber-500: #C98A12;
+  --color-amber-700: #8F5F0C;
+
+  /* Radius signature — soft "melt" rounding */
+  --radius-melt: 0.625rem;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+  }
+
+  body {
+    background-color: var(--color-cream-100);
+    color: var(--color-bronze-900);
+  }
+
+  ::selection {
+    background-color: var(--color-bronze-100);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-bronze-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-wax-300);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-bronze-300);
+  }
+}
+
+@layer utilities {
+  .drip-edge {
+    border-radius: 0 0 var(--radius-melt) var(--radius-melt) / 0 0 1.25rem 1.25rem;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
